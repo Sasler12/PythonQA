@@ -10,7 +10,11 @@ class Student:
         self.grades = {}
 
     def rate_lecture(self, lecturer, course, grade):
-        if isinstance(lecturer, Lecturer) and course in self.courses_in_progress and course in lecturer.courses_attached:
+        if (
+            isinstance(lecturer, Lecturer)
+            and course in self.courses_in_progress
+            and course in lecturer.courses_attached
+        ):
             if course in lecturer.grades:
                 lecturer.grades[course] += [grade]
             else:
@@ -22,7 +26,8 @@ class Student:
         all_grades = []
         for grades in self.grades.values():
             all_grades.extend(grades)
-        if len(all_grades) == 0:
+
+        if not all_grades:
             return 0
         average_grade = sum(all_grades)/len(all_grades)
         return average_grade
@@ -57,6 +62,7 @@ class Lecturer(Mentor):
         all_grades = []
         for grades in self.grades.values():
             all_grades.extend(grades)
+
         if len(all_grades) == 0:
             return 0
         average_grade = sum(all_grades)/len(all_grades)
@@ -77,7 +83,11 @@ class Lecturer(Mentor):
 
 class Reviewer(Mentor):
     def rate_hw(self, student, course, grade):
-        if isinstance(student, Student) and course in self.courses_attached and course in student.courses_in_progress:
+        if (
+            isinstance(student, Student)
+            and course in self.courses_attached
+            and course in student.courses_in_progress
+        ):
             if course in student.grades:
                 student.grades[course] += [grade]
             else:
@@ -96,7 +106,7 @@ def average_student_grade(students, course):
     for student in students:
         if course in student.grades:
             average_grade.extend(student.grades[course])
-    if len(average_grade) == 0:
+    if not average_grade:
         return 0
     return sum(average_grade)/len(average_grade)
 
@@ -105,19 +115,19 @@ def average_lecturer_grade(lecturers, course):
     for lecturer in lecturers:
         if course in lecturer.grades:
             average_grade.extend(lecturer.grades[course])
-    if len(average_grade) == 0:
+    if not average_grade:
         return 0
     return sum(average_grade)/len(average_grade)
 
-
+#лекторы
 lecturer1 = Lecturer('Иван', 'Иванов')
 lecturer2 = Lecturer('Виктория', 'Нерадовская')
 lecturer3 = Lecturer('Дарья', 'Скобелева')
-
+#проверяющие
 reviewer1 = Reviewer('Пётр', 'Петров')
 reviewer2 = Reviewer('Григорий', 'Блинов')
 reviewer3 = Reviewer('Иммануил', 'Кант')
-
+#студенты
 student1 = Student('Ольга', 'Алёхина', 'Ж')
 student2 = Student('Ruoy', 'Eman', 'М')
 student3 = Student('Дария', 'Уращупкина', 'Ж')
